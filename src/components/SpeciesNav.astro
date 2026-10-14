@@ -1,0 +1,99 @@
+---
+const species = [
+  { name: 'Adelie', label: 'Adélie' },
+  { name: 'Chinstrap', label: 'Chinstrap' },
+  { name: 'Gentoo', label: 'Gentoo' },
+];
+---
+
+<label for="species">Choisir une espèce</label>
+<select id="species">
+  {species.map(({ name, label }) => (
+    <option value={`${name}/`}>{label}</option>
+  ))}
+</select>
+
+<script>
+  document.querySelector('#species')?.addEventListener('change', (evt) => {
+    const value = (evt.target as HTMLSelectElement).value;
+    location.pathname = `/species/${value}`;
+  });
+</script>
+
+<style>
+  .species-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 38rem;
+    margin-bottom: 2rem;
+    padding: 0.75rem;
+    border: 1px solid #d6dce5;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+
+  .species-nav__label {
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .species-nav__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .species-nav__option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5.5rem;
+    padding: 0.55rem 0.85rem;
+    border: 2px solid color-mix(in srgb, var(--species-color) 55%, white);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 0.95rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .species-nav__option:hover,
+  .species-nav__option:focus-visible {
+    border-color: var(--species-color);
+    color: var(--species-color);
+    outline: none;
+    transform: translateY(-1px);
+  }
+
+  .species-nav__option--active {
+    background: var(--species-color);
+  }
+
+  .species-nav__option--active:hover,
+  .species-nav__option--active:focus-visible {
+    color: inherit;
+  }
+
+  @media (max-width: 34rem) {
+    .species-nav {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .species-nav__options {
+      width: 100%;
+    }
+
+    .species-nav__option {
+      flex: 1;
+    }
+  }
+</style>

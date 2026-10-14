@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import penguins from '../../../data/penguins.json';
+
+const sexes = [...new Set(penguins.map((penguin) => penguin.sex).filter(Boolean))].sort();
+---
+
+<BaseLayout title="Manchots par sexe">
+  <h1>Manchots par sexe</h1>
+  <p class="page-intro">Choisissez un sexe pour afficher son graphique.</p>
+  <ul class="dimension-list">
+    {sexes.map((value) => (
+      <li><a href={`/penguins/sex/${value}/`}>{value}</a></li>
+    ))}
+  </ul>
+</BaseLayout>

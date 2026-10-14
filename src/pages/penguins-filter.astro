@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../data/penguins.json";
+
+const data = penguins.filter((penguin) => penguin.culmen_length_mm && penguin.culmen_depth_mm);
+---
+
+<BaseLayout title="Penguins avec filtre">
+  <h1>Penguins avec filtre</h1>
+  <p class="page-intro">Le graphique se met a jour lorsque l'espece selectionnee change.</p>
+
+  <div class="controls">
+    <label for="species">Espece</label>
+    <select name="species" id="species">
+      <option value="">Toutes les especes</option>
+      <option value="Adelie">Adelie</option>
+      <option value="Chinstrap">Chinstrap</option>
+      <option value="Gentoo">Gentoo</option>
+    </select>
+  </div>
+
+  <div class="chart-card">
+    <div id="plot" aria-label="Nuage de points filtré par espèce">
+      <PlotFigure options={{
+        grid: true,
+        x: { label: "Longueur du bec (mm)" },
+        y: { label: "Profondeur du bec (mm)" },
+        color: { legend: true },
+        marks: [
+          Plot.dot(data, {
+            x: "culmen_length_mm",
+            y: "culmen_depth_mm",
+            stroke: "species",
+          }),
+        ],
+      }} />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import penguins from "../data/penguins.json";
+  import { renderPenguinPlot } from "../scripts/penguinPlot";
+
+  const selectSpecies = document.querySelector<HTMLSelectElement>("#species");
+  const plotContainer = document.querySelector<HTMLDivElement>("#plot");
+
+  function renderPlot() {
+    if (!selectSpecies || !plotContainer) return;
+
+    const species = selectSpecies.value;
+    const filteredPenguins = penguins
+      .filter((penguin) => !species || penguin.species === species)
+    renderPenguinPlot(plotContainer, filteredPenguins);
+  }
+
+  selectSpecies?.addEventListener("change", renderPlot);
+  renderPlot();
+</script>

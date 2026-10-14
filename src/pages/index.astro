@@ -1,21 +1,129 @@
 ---
-import PlotFigure from "../components/PlotFigure.astro";
-import Layout from "../layouts/Layout.astro";
-import * as Plot from "@observablehq/plot";
-import penguins from "../assets/penguins.json";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const datasets = [
+  {
+    href: "/cars/",
+    title: "Voitures",
+    description: "Explorez les relations entre poids, puissance et année de fabrication.",
+    icon: "🚗",
+  },
+  {
+    href: "/penguins/",
+    title: "Manchots",
+    description: "Analysez les espèces, les îles, le sexe et la morphologie des manchots.",
+    icon: "🐧",
+  },
+  {
+    href: "/baleines/",
+    title: "Baleines",
+    description: "Découvrez les caractéristiques et la répartition des baleines observées.",
+    icon: "🐋",
+  },
+  {
+    href: "/requins/",
+    title: "Requins",
+    description: "Comparez les espèces, les mensurations et les caractéristiques des requins.",
+    icon: "🦈",
+  },
+];
 ---
 
-<Layout>
-  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
-  <PlotFigure
-    options={{
-      marks: [
-        Plot.dot(penguins, {
-          x: "culmen_length_mm",
-          y: "culmen_depth_mm",
-          stroke: "species",
-        }),
-      ],
-    }}
-  />
-</Layout>
+<BaseLayout title="Accueil — Jeux de données">
+  <section class="home-header">
+    <p class="eyebrow">DataViz Explorer</p>
+    <h1>Choisissez un jeu de données</h1>
+    <p class="page-intro">
+      Sélectionnez un sujet pour accéder à ses graphiques et naviguer entre ses différentes analyses.
+    </p>
+  </section>
+
+  <div class="dataset-grid">
+    {datasets.map((dataset) => (
+      <a class="dataset-card" href={dataset.href}>
+        <span class="dataset-icon" aria-hidden="true">{dataset.icon}</span>
+        <h2>{dataset.title}</h2>
+        <p>{dataset.description}</p>
+        <span class="dataset-link">Explorer &rarr;</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .home-header {
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.35rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .home-header h1 {
+    margin: 0;
+  }
+
+  .home-header .page-intro {
+    max-width: 42rem;
+    margin-bottom: 0;
+  }
+
+  .dataset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .dataset-card {
+    display: flex;
+    min-height: 14rem;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+    text-decoration: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .dataset-card:hover,
+  .dataset-card:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .dataset-icon {
+    font-size: 2.5rem;
+  }
+
+  .dataset-card h2 {
+    margin: 0.75rem 0 0.35rem;
+    font-size: 1.35rem;
+  }
+
+  .dataset-card p {
+    margin: 0;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .dataset-link {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  @media (max-width: 40rem) {
+    .dataset-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

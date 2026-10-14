@@ -1,9 +1,26 @@
 ---
 import * as Plot from "@observablehq/plot";
+// @ts-ignore - jsdom types are installed
 import { JSDOM } from "jsdom";
+
 const { options } = Astro.props;
 
 const plot = Plot.plot({ ...options, document: new JSDOM("").window.document });
 ---
 
-<div set:html={plot.outerHTML} />
+<div class="plot-container" set:html={plot.outerHTML} />
+
+<style>
+  .plot-container {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .plot-container :global(svg) {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import PenguinDimensionPage from '../../../components/PenguinDimensionPage.astro';
+import penguins from '../../../data/penguins.json';
+
+export function getStaticPaths() {
+  const islands = [...new Set(penguins.map((penguin) => penguin.island))];
+
+  return islands.map((value) => ({
+    params: { island: value },
+    props: { value, label: value },
+  }));
+}
+
+const { value, label } = Astro.props;
+---
+
+<PenguinDimensionPage dimension="island" value={value} label={label} />

@@ -1,0 +1,542 @@
+[
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": 420.5,
+    "dorsal_fin_height_cm": 52.3,
+    "pectoral_fin_length_cm": 88.0,
+    "body_mass_kg": 950,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": 385.0,
+    "dorsal_fin_height_cm": 46.1,
+    "pectoral_fin_length_cm": 79.5,
+    "body_mass_kg": 720,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": 460.2,
+    "dorsal_fin_height_cm": 58.4,
+    "pectoral_fin_length_cm": 95.2,
+    "body_mass_kg": 1280,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": null,
+    "dorsal_fin_height_cm": null,
+    "pectoral_fin_length_cm": null,
+    "body_mass_kg": null,
+    "sex": null
+  },
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": 365.4,
+    "dorsal_fin_height_cm": 44.0,
+    "pectoral_fin_length_cm": 75.0,
+    "body_mass_kg": 640,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Neptune Islands",
+    "total_length_cm": 405.0,
+    "dorsal_fin_height_cm": 49.8,
+    "pectoral_fin_length_cm": 84.6,
+    "body_mass_kg": 860,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Guadalupe",
+    "total_length_cm": 445.8,
+    "dorsal_fin_height_cm": 55.2,
+    "pectoral_fin_length_cm": 92.4,
+    "body_mass_kg": 1150,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Guadalupe",
+    "total_length_cm": 392.1,
+    "dorsal_fin_height_cm": 47.9,
+    "pectoral_fin_length_cm": 81.3,
+    "body_mass_kg": 780,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Guadalupe",
+    "total_length_cm": 430.6,
+    "dorsal_fin_height_cm": 53.0,
+    "pectoral_fin_length_cm": 89.0,
+    "body_mass_kg": 1020,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Guadalupe",
+    "total_length_cm": 378.0,
+    "dorsal_fin_height_cm": 45.3,
+    "pectoral_fin_length_cm": 78.2,
+    "body_mass_kg": 690,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Guadalupe",
+    "total_length_cm": 412.3,
+    "dorsal_fin_height_cm": 50.1,
+    "pectoral_fin_length_cm": 85.5,
+    "body_mass_kg": 890,
+    "sex": null
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 350.2,
+    "dorsal_fin_height_cm": 41.5,
+    "pectoral_fin_length_cm": 72.0,
+    "body_mass_kg": 580,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 475.0,
+    "dorsal_fin_height_cm": 61.2,
+    "pectoral_fin_length_cm": 99.1,
+    "body_mass_kg": 1390,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 398.4,
+    "dorsal_fin_height_cm": 48.7,
+    "pectoral_fin_length_cm": 82.5,
+    "body_mass_kg": 810,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 422.0,
+    "dorsal_fin_height_cm": 51.6,
+    "pectoral_fin_length_cm": 87.3,
+    "body_mass_kg": 970,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 360.8,
+    "dorsal_fin_height_cm": 43.1,
+    "pectoral_fin_length_cm": 74.2,
+    "body_mass_kg": 620,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 450.5,
+    "dorsal_fin_height_cm": 56.7,
+    "pectoral_fin_length_cm": 94.0,
+    "body_mass_kg": 1200,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 382.4,
+    "dorsal_fin_height_cm": 46.5,
+    "pectoral_fin_length_cm": 79.8,
+    "body_mass_kg": 740,
+    "sex": "MALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 438.0,
+    "dorsal_fin_height_cm": 54.0,
+    "pectoral_fin_length_cm": 91.0,
+    "body_mass_kg": 1090,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Great White",
+    "region": "Gansbaai",
+    "total_length_cm": 368.5,
+    "dorsal_fin_height_cm": 44.2,
+    "pectoral_fin_length_cm": 76.1,
+    "body_mass_kg": 660,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Hawaii",
+    "total_length_cm": 330.5,
+    "dorsal_fin_height_cm": 34.2,
+    "pectoral_fin_length_cm": 62.0,
+    "body_mass_kg": 380,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Hawaii",
+    "total_length_cm": 295.0,
+    "dorsal_fin_height_cm": 29.8,
+    "pectoral_fin_length_cm": 55.4,
+    "body_mass_kg": 270,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Hawaii",
+    "total_length_cm": 365.8,
+    "dorsal_fin_height_cm": 38.5,
+    "pectoral_fin_length_cm": 68.2,
+    "body_mass_kg": 490,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Hawaii",
+    "total_length_cm": 310.2,
+    "dorsal_fin_height_cm": 31.4,
+    "pectoral_fin_length_cm": 58.0,
+    "body_mass_kg": 320,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Hawaii",
+    "total_length_cm": 380.0,
+    "dorsal_fin_height_cm": 40.2,
+    "pectoral_fin_length_cm": 71.5,
+    "body_mass_kg": 540,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Grand Bahama",
+    "total_length_cm": 345.6,
+    "dorsal_fin_height_cm": 35.8,
+    "pectoral_fin_length_cm": 64.1,
+    "body_mass_kg": 420,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Grand Bahama",
+    "total_length_cm": 288.4,
+    "dorsal_fin_height_cm": 28.5,
+    "pectoral_fin_length_cm": 53.8,
+    "body_mass_kg": 250,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Grand Bahama",
+    "total_length_cm": 358.2,
+    "dorsal_fin_height_cm": 37.1,
+    "pectoral_fin_length_cm": 66.8,
+    "body_mass_kg": 460,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Grand Bahama",
+    "total_length_cm": 302.0,
+    "dorsal_fin_height_cm": 30.6,
+    "pectoral_fin_length_cm": 56.5,
+    "body_mass_kg": 295,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Grand Bahama",
+    "total_length_cm": 410.5,
+    "dorsal_fin_height_cm": 43.8,
+    "pectoral_fin_length_cm": 76.0,
+    "body_mass_kg": 630,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 322.0,
+    "dorsal_fin_height_cm": 33.0,
+    "pectoral_fin_length_cm": 60.2,
+    "body_mass_kg": 350,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 275.5,
+    "dorsal_fin_height_cm": 27.2,
+    "pectoral_fin_length_cm": 51.5,
+    "body_mass_kg": 220,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 372.4,
+    "dorsal_fin_height_cm": 39.1,
+    "pectoral_fin_length_cm": 69.8,
+    "body_mass_kg": 510,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 318.6,
+    "dorsal_fin_height_cm": 32.5,
+    "pectoral_fin_length_cm": 59.4,
+    "body_mass_kg": 340,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": null,
+    "dorsal_fin_height_cm": null,
+    "pectoral_fin_length_cm": null,
+    "body_mass_kg": null,
+    "sex": null
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 338.0,
+    "dorsal_fin_height_cm": 34.8,
+    "pectoral_fin_length_cm": 63.0,
+    "body_mass_kg": 400,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 290.5,
+    "dorsal_fin_height_cm": 29.0,
+    "pectoral_fin_length_cm": 54.2,
+    "body_mass_kg": 260,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 352.0,
+    "dorsal_fin_height_cm": 36.4,
+    "pectoral_fin_length_cm": 65.5,
+    "body_mass_kg": 445,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 305.8,
+    "dorsal_fin_height_cm": 31.0,
+    "pectoral_fin_length_cm": 57.1,
+    "body_mass_kg": 305,
+    "sex": "MALE"
+  },
+  {
+    "species": "Tiger",
+    "region": "Ningaloo",
+    "total_length_cm": 395.0,
+    "dorsal_fin_height_cm": 42.0,
+    "pectoral_fin_length_cm": 73.8,
+    "body_mass_kg": 585,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "California Current",
+    "total_length_cm": 220.4,
+    "dorsal_fin_height_cm": 24.1,
+    "pectoral_fin_length_cm": 43.5,
+    "body_mass_kg": 115,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "California Current",
+    "total_length_cm": 260.0,
+    "dorsal_fin_height_cm": 28.5,
+    "pectoral_fin_length_cm": 51.0,
+    "body_mass_kg": 175,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "California Current",
+    "total_length_cm": 205.2,
+    "dorsal_fin_height_cm": 22.0,
+    "pectoral_fin_length_cm": 40.2,
+    "body_mass_kg": 95,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "California Current",
+    "total_length_cm": 285.8,
+    "dorsal_fin_height_cm": 31.4,
+    "pectoral_fin_length_cm": 56.2,
+    "body_mass_kg": 230,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "California Current",
+    "total_length_cm": 235.0,
+    "dorsal_fin_height_cm": 25.6,
+    "pectoral_fin_length_cm": 46.0,
+    "body_mass_kg": 135,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Gulf Stream",
+    "total_length_cm": 215.6,
+    "dorsal_fin_height_cm": 23.4,
+    "pectoral_fin_length_cm": 42.1,
+    "body_mass_kg": 108,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Gulf Stream",
+    "total_length_cm": 272.1,
+    "dorsal_fin_height_cm": 29.8,
+    "pectoral_fin_length_cm": 53.4,
+    "body_mass_kg": 200,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Gulf Stream",
+    "total_length_cm": 228.0,
+    "dorsal_fin_height_cm": 24.9,
+    "pectoral_fin_length_cm": 44.8,
+    "body_mass_kg": 125,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Gulf Stream",
+    "total_length_cm": 295.4,
+    "dorsal_fin_height_cm": 32.7,
+    "pectoral_fin_length_cm": 58.0,
+    "body_mass_kg": 255,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Gulf Stream",
+    "total_length_cm": 242.3,
+    "dorsal_fin_height_cm": 26.5,
+    "pectoral_fin_length_cm": 47.6,
+    "body_mass_kg": 148,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 210.0,
+    "dorsal_fin_height_cm": 22.8,
+    "pectoral_fin_length_cm": 41.0,
+    "body_mass_kg": 102,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 265.5,
+    "dorsal_fin_height_cm": 29.0,
+    "pectoral_fin_length_cm": 52.1,
+    "body_mass_kg": 185,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 232.0,
+    "dorsal_fin_height_cm": 25.2,
+    "pectoral_fin_length_cm": 45.3,
+    "body_mass_kg": 130,
+    "sex": null
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 310.2,
+    "dorsal_fin_height_cm": 34.5,
+    "pectoral_fin_length_cm": 61.2,
+    "body_mass_kg": 285,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 225.4,
+    "dorsal_fin_height_cm": 24.5,
+    "pectoral_fin_length_cm": 44.0,
+    "body_mass_kg": 120,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 278.0,
+    "dorsal_fin_height_cm": 30.5,
+    "pectoral_fin_length_cm": 54.8,
+    "body_mass_kg": 215,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 248.6,
+    "dorsal_fin_height_cm": 27.1,
+    "pectoral_fin_length_cm": 48.9,
+    "body_mass_kg": 155,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 202.8,
+    "dorsal_fin_height_cm": 21.6,
+    "pectoral_fin_length_cm": 39.5,
+    "body_mass_kg": 90,
+    "sex": "MALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 288.0,
+    "dorsal_fin_height_cm": 31.8,
+    "pectoral_fin_length_cm": 56.7,
+    "body_mass_kg": 235,
+    "sex": "FEMALE"
+  },
+  {
+    "species": "Shortfin Mako",
+    "region": "Azores",
+    "total_length_cm": 238.5,
+    "dorsal_fin_height_cm": 26.0,
+    "pectoral_fin_length_cm": 46.8,
+    "body_mass_kg": 140,
+    "sex": "MALE"
+  }
+]

@@ -1,0 +1,141 @@
+---
+import * as Plot from '@observablehq/plot';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlotFigure from '../components/PlotFigure.astro';
+import rawWhales from '../data/baleines.json';
+
+const whaleColors = ['#2563eb', '#0f766e', '#e07a2d'];
+const whaleSpecies = [...new Set(rawWhales.map((whale) => whale.species).filter(Boolean))];
+const whales = rawWhales.filter((whale) => whale.species);
+const measuredWhales = whales.filter(
+  (whale) =>
+    whale.total_length_m !== null &&
+    whale.body_mass_tonnes !== null &&
+    whale.fluke_width_m !== null &&
+    whale.flipper_length_m !== null,
+);
+const whalesWithSex = whales.filter((whale) => whale.sex);
+const color = { domain: whaleSpecies, range: whaleColors.slice(0, whaleSpecies.length), legend: true };
+
+const speciesOptions = {
+  title: "Nombre d'observations par espèce",
+  ariaLabel: "Barres du nombre d'observations par espèce de baleine",
+  height: 280,
+  marginLeft: 130,
+  x: { grid: true, label: 'Observations' },
+  y: { label: 'Espèce' },
+  color,
+  marks: [
+    Plot.barX(whales, Plot.groupY({ x: 'count' }, { y: 'species', fill: 'species' })),
+    Plot.ruleX([0]),
+  ],
+};
+
+const lengthOptions = {
+  title: 'Distribution de la longueur totale',
+  subtitle: 'Longueur des baleines mesurées, en mètres',
+  ariaLabel: 'Histogramme de la longueur totale des baleines',
+  height: 300,
+  x: { label: 'Longueur totale (m)' },
+  y: { grid: true, label: 'Observations' },
+  color,
+  marks: [
+    Plot.rectY(
+      measuredWhales,
+      Plot.binX({ y: 'count' }, { x: 'total_length_m', fill: 'species' }),
+    ),
+    Plot.ruleY([0]),
+  ],
+};
+
+const massLengthOptions = {
+  title: 'Longueur et masse corporelle',
+  subtitle: 'Une observation par point, colorée par espèce',
+  ariaLabel: 'Nuage de points de la longueur et de la masse des baleines',
+  height: 340,
+  grid: true,
+  x: { label: 'Longueur totale (m)' },
+  y: { label: 'Masse corporelle (tonnes)' },
+  color,
+  marks: [
+    Plot.dot(measuredWhales, {
+      x: 'total_length_m',
+      y: 'body_mass_tonnes',
+      fill: 'species',
+      stroke: 'species',
+      fillOpacity: 0.75,
+      r: 5,
+      tip: true,
+    }),
+  ],
+};
+
+const finsOptions = {
+  title: 'Comparaison des nageoires',
+  subtitle: 'Largeur de la nageoire caudale et longueur des pectorales',
+  ariaLabel: 'Nuage de points des mesures des nageoires de baleines',
+  height: 340,
+  grid: true,
+  x: { label: 'Nageoire pectorale (m)' },
+  y: { label: 'Nageoire caudale (m)' },
+  color,
+  marks: [
+    Plot.dot(measuredWhales, {
+      x: 'flipper_length_m',
+      y: 'fluke_width_m',
+      fill: 'species',
+      stroke: 'species',
+      fillOpacity: 0.75,
+      r: 5,
+      tip: true,
+    }),
+  ],
+};
+
+const regionOptions = {
+  title: 'Répartition par région',
+  subtitle: "Nombre de baleines selon la zone d'observation",
+  ariaLabel: 'Barres de la répartition des baleines par région',
+  height: 360,
+  marginLeft: 150,
+  x: { grid: true, label: 'Observations' },
+  y: { label: 'Région' },
+  color,
+  marks: [
+    Plot.barX(
+      whales,
+      Plot.groupY({ x: 'count' }, { y: 'region', fill: 'species', sort: { y: '-x' } }),
+    ),
+    Plot.ruleX([0]),
+  ],
+};
+
+const sexOptions = {
+  title: 'Répartition des sexes',
+  subtitle: 'Les valeurs manquantes sont exclues',
+  ariaLabel: 'Barres empilées des sexes par espèce de baleine',
+  height: 300,
+  marginLeft: 130,
+  x: { grid: true, label: 'Observations' },
+  y: { label: 'Espèce' },
+  color: { legend: true },
+  marks: [
+    Plot.barX(whalesWithSex, Plot.groupY({ x: 'count' }, { y: 'species', fill: 'sex' })),
+    Plot.ruleX([0]),
+  ],
+};
+---
+
+<BaseLayout title="Baleines">
+  <h1>Exploration des baleines</h1>
+  <p class="page-intro">
+    Comparez les espèces, les mensurations, les nageoires, les régions et les sexes présents dans la base de données.
+  </p>
+
+  <div class="chart-card"><PlotFigure options={speciesOptions} /></div>
+  <div class="chart-card"><PlotFigure options={lengthOptions} /></div>
+  <div class="chart-card"><PlotFigure options={massLengthOptions} /></div>
+  <div class="chart-card"><PlotFigure options={finsOptions} /></div>
+  <div class="chart-card"><PlotFigure options={regionOptions} /></div>
+  <div class="chart-card"><PlotFigure options={sexOptions} /></div>
+</BaseLayout>

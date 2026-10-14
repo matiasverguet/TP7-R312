@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import penguins from '../../../data/penguins.json';
+
+const islands = [...new Set(penguins.map((penguin) => penguin.island))].sort();
+---
+
+<BaseLayout title="Manchots par île">
+  <h1>Manchots par île</h1>
+  <p class="page-intro">Choisissez une île pour afficher son graphique.</p>
+  <ul class="dimension-list">
+    {islands.map((value) => (
+      <li><a href={`/penguins/island/${value}/`}>{value}</a></li>
+    ))}
+  </ul>
+</BaseLayout>

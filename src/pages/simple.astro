@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Essai simple">
+  <h1>Essai simple</h1>
+  <p class="page-intro">Premier graphique Observable Plot genere directement dans le navigateur.</p>
+
+  <div class="chart-card">
+    <div id="plot" class="plot-container" aria-label="Graphique en barres aleatoire"></div>
+  </div>
+</BaseLayout>
+
+<script>
+  import * as Plot from "@observablehq/plot";
+
+  const plotContainer = document.querySelector<HTMLDivElement>("#plot");
+  const data = [1, 2, 3, 4, 5].map((value) => ({ value }));
+
+  if (plotContainer) {
+    const plot = Plot.plot({
+      y: { grid: true },
+      marks: [Plot.barY(data, { x: "value", y: "value" })]
+    });
+    plotContainer.append(plot);
+  }
+</script>

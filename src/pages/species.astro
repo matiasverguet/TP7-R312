@@ -1,0 +1,269 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+import PlotFigure from '../components/PlotFigure.astro';
+import * as Plot from '@observablehq/plot';
+import penguins from '../data/penguins.json';
+import { speciesColorDomain, speciesColorRange, speciesColors } from '../data/speciesColors';
+
+const species = [
+  { name: 'Adelie', label: 'Adélie', id: 'adelie', color: speciesColors.Adelie },
+  { name: 'Chinstrap', label: 'Chinstrap', id: 'chinstrap', color: speciesColors.Chinstrap },
+  { name: 'Gentoo', label: 'Gentoo', id: 'gentoo', color: speciesColors.Gentoo }
+];
+
+const colorOptions = { domain: speciesColorDomain, range: speciesColorRange };
+---
+
+<Layout title="Espèces de manchots">
+  <div class="species-page">
+    <header class="species-header">
+      <p class="eyebrow">Palmer DataViz</p>
+      <h1>Comparer les espèces</h1>
+      <p class="page-intro">Choisissez une espèce pour faire défiler son graphique.</p>
+      <a class="tabs-page-link" href="/species-tabs/">Voir la version avec onglets</a>
+    </header>
+
+    <nav class="anchor-menu" aria-label="Choisir une espèce">
+      {species.map((item) => (
+        <a
+          class="menu-item"
+          href={`#${item.id}`}
+          style={`--species-color: ${item.color}; --species-text-color: ${item.name === 'Chinstrap' ? '#172033' : '#ffffff'}`}
+        >
+          <span class="anchor-menu__dot" aria-hidden="true"></span>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <section class="species-slider" aria-label="Graphiques des espèces">
+      {species.map((item) => {
+        const data = penguins.filter((p) => p.species === item.name);
+
+        return (
+          <article class="species-slide item" id={item.id}>
+            <div class="species-slide__heading">
+              <h2>{item.label}</h2>
+              <span>{data.length} observations</span>
+            </div>
+            <PlotFigure options={{
+              color: colorOptions,
+              marks: [
+                Plot.dot(data, {
+                  x: 'culmen_length_mm',
+                  y: 'culmen_depth_mm',
+                  stroke: 'species',
+                  fill: 'species',
+                  fillOpacity: 0.75
+                })
+              ]
+            }} />
+            <a class="species-slide__link" href={`/species/${item.name}`} style={`--species-color: ${item.color}`}>
+              Voir la page {item.label}
+            </a>
+          </article>
+        );
+      })}
+    </section>
+  </div>
+</Layout>
+
+<script>
+  const slider = document.querySelector('.species-slider');
+  const menuItems = document.querySelectorAll('.menu-item');
+  const items = document.querySelectorAll('.item');
+
+  const scrollToSpecies = (id: string, behavior: ScrollBehavior = 'smooth') => {
+    if (!slider || !id) return;
+    const slide = document.getElementById(id);
+    if (!slide) return;
+
+    const sliderBox = slider.getBoundingClientRect();
+    const slideBox = slide.getBoundingClientRect();
+    const left = slider.scrollLeft + slideBox.left - sliderBox.left;
+    slider.scrollTo({ left, behavior });
+  };
+
+  menuItems.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const id = link.getAttribute('href')?.slice(1);
+      if (!id) return;
+      event.preventDefault();
+      history.pushState(null, '', `#${id}`);
+      scrollToSpecies(id);
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute('id');
+        const menuItem = document.querySelector(`.menu-item[href="#${id}"]`);
+        if (entry.isIntersecting) {
+          menuItem?.classList.add('active');
+        } else {
+          menuItem?.classList.remove('active');
+        }
+      });
+    },
+    { root: slider, threshold: 0.3 }
+  );
+
+  items.forEach((item) => observer.observe(item));
+
+  if (window.location.hash) {
+    scrollToSpecies(window.location.hash.slice(1), 'auto');
+  }
+</script>
+
+<style>
+  .species-page {
+    min-width: 0;
+    padding: 1rem 0 2rem;
+  }
+
+  .species-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.35rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .species-header h1 {
+    margin: 0;
+  }
+
+  .species-header .page-intro {
+    margin: 0.5rem 0 0;
+  }
+
+  .anchor-menu {
+    position: sticky;
+    top: 4.4rem;
+    z-index: 5;
+    display: flex;
+    gap: 0.6rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.45rem;
+    overflow-x: auto;
+    border: 1px solid #d6dce5;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+  }
+
+  .anchor-menu a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 2px solid var(--species-color);
+    border-radius: 6px;
+    color: #172033;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .anchor-menu a.active {
+    background-color: var(--species-color);
+    border-color: var(--species-color);
+    color: var(--species-text-color);
+  }
+
+  .anchor-menu a:hover,
+  .anchor-menu a:focus-visible {
+    background: var(--species-color);
+    color: #ffffff;
+    outline: none;
+    transform: translateY(-1px);
+  }
+
+  .anchor-menu__dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--species-color);
+  }
+
+  .species-slider {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0rem 0rem 1.25rem;
+    scroll-behavior: smooth;
+    scroll-padding-inline: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: #94a3b8 transparent;
+  }
+
+  .species-slide {
+    flex: 0 0 calc(100% - 1rem);
+    width: calc(100% - 1rem);
+    min-width: 0;
+    scroll-margin: 8rem 1rem 0;
+    scroll-snap-align: start;
+    background: #ffffff;
+    border: 1px solid #d6dce5;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+  }
+
+  .species-slide__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .species-slide h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .species-slide__heading span {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+
+  .species-slide__link {
+    display: inline-block;
+    margin-top: 0.9rem;
+    color: var(--species-color);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .species-slide__link:hover,
+  .species-slide__link:focus-visible {
+    color: #172033;
+  }
+
+  @media (max-width: 34rem) {
+    .anchor-menu {
+      width: 100%;
+      top: 3.8rem;
+    }
+
+    .species-slide__heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+</style>

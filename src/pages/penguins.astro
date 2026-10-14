@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../data/penguins.json";
+
+const data = penguins.filter((penguin) => penguin.culmen_length_mm && penguin.culmen_depth_mm);
+---
+
+<BaseLayout title="Simple Penguin">
+  <h1>Simple Penguin</h1>
+  <p class="page-intro">Le jeu de donnees JSON des manchots affiche dans un nuage de points.</p>
+
+  <div class="chart-card">
+    <PlotFigure options={{
+      grid: true,
+      x: { label: "Longueur du bec (mm)" },
+      y: { label: "Profondeur du bec (mm)" },
+      color: { legend: true },
+      marks: [
+        Plot.dot(data, {
+          x: "culmen_length_mm",
+          y: "culmen_depth_mm",
+          stroke: "species",
+        }),
+      ],
+    }} />
+  </div>
+</BaseLayout>

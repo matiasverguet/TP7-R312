@@ -1,0 +1,211 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Visualisation de données des manchots avec Observable Plot et Astro" } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const subjects = {
+  penguins: {
+    label: 'Manchots',
+    routes: [
+      { href: '/penguins', label: 'Vue générale' },
+      { href: '/penguins-filter', label: 'Filtre espèce' },
+      { href: '/penguins-filters', label: 'Filtres multiples' },
+      { href: '/species', label: 'Espèces' },
+      { href: '/species-tabs', label: 'Espèces avec onglets' },
+      { href: '/penguins/specie', label: 'Routes par espèce' },
+      { href: '/penguins/island', label: 'Routes par île' },
+      { href: '/penguins/sex', label: 'Routes par sexe' },
+      { href: '/morphologie', label: 'Morphologie' },
+      { href: '/demographie', label: 'Démographie' },
+    ],
+  },
+  cars: {
+    label: 'Voitures',
+    routes: [{ href: '/cars', label: 'Années et puissance' }],
+  },
+  whales: {
+    label: 'Baleines',
+    routes: [{ href: '/baleines', label: 'Tableau de bord' }],
+  },
+  sharks: {
+    label: 'Requins',
+    routes: [{ href: '/requins', label: 'Tableau de bord' }],
+  },
+} as const;
+
+type SubjectKey = keyof typeof subjects;
+const subjectMatchers: Record<SubjectKey, (path: string) => boolean> = {
+  penguins: (path) =>
+    ['/penguins', '/penguins-filter', '/penguins-filters', '/species', '/morphologie', '/demographie'].some(
+      (prefix) => path === prefix || path.startsWith(`${prefix}/`),
+    ),
+  cars: (path) => path === '/cars' || path.startsWith('/cars/'),
+  whales: (path) => path === '/baleines',
+  sharks: (path) => path === '/requins',
+};
+const activeSubject = (Object.keys(subjectMatchers) as SubjectKey[]).find((key) =>
+  subjectMatchers[key](pathname),
+);
+const pages = activeSubject ? subjects[activeSubject].routes : [];
+const activePage = pages
+  .filter((page) => pathname === page.href || pathname.startsWith(`${page.href}/`))
+  .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} — TP Plot</title>
+    <style>
+      :root {
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #0f172a;
+        --primary: #2563eb;
+        --border: #e2e8f0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      nav {
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+      }
+      .logo {
+        font-weight: 700;
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+      }
+      .site-select {
+        min-width: 13rem;
+        padding: 0.6rem 2rem 0.6rem 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        font: inherit;
+        font-weight: 600;
+      }
+      main {
+        max-width: 960px;
+        width: 100%;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        flex: 1;
+        background: rgba(248, 250, 252, 0.85);
+        border-radius: 12px;
+      }
+      footer {
+        background: var(--card-bg);
+        border-top: 1px solid var(--border);
+        text-align: center;
+        padding: 1.5rem 1rem;
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+      :global(.chart-card) {
+        background: var(--card-bg);
+        border-radius: 10px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        margin-bottom: 2rem;
+      }
+      :global(h1) {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      :global(.page-intro) {
+        color: #475569;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+      }
+      :global(.back-link) {
+        display: inline-block;
+        margin: 1rem 0;
+        color: var(--primary);
+        text-underline-offset: 0.2rem;
+      }
+      :global(.dimension-list) {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        gap: 0.75rem;
+        padding: 0;
+        list-style: none;
+      }
+      :global(.dimension-list a) {
+        display: block;
+        padding: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        background: var(--card-bg);
+        color: var(--primary);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      :global(.dimension-list a:hover) {
+        border-color: var(--primary);
+      }
+    </style>
+  </head>
+  <body style="background: url('/owl-bg.jpg') no-repeat center/cover; background-attachment: fixed;">
+    <header>
+      <nav aria-label="Navigation principale">
+        <a href="/" class="logo">🐧 Palmer DataViz</a>
+        {activeSubject && (
+          <>
+            <label for="site-navigation" class="sr-only">Naviguer dans la rubrique {subjects[activeSubject].label}</label>
+            <select id="site-navigation" class="site-select" aria-label={`Navigation ${subjects[activeSubject].label}`}>
+              {pages.map((page) => (
+                <option value={`${page.href}/`} selected={activePage === page.href}>
+                  {page.label}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>Projet Astro & Observable Plot — MMI 2</p>
+    </footer>
+  </body>
+</html>
+
+<script>
+  document.querySelector('#site-navigation')?.addEventListener('change', (event) => {
+    const value = (event.target as HTMLSelectElement).value;
+    location.pathname = value;
+  });
+</script>

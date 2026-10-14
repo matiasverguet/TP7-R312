@@ -1,0 +1,84 @@
+---
+import * as Plot from "@observablehq/plot";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import rawPenguins from "../data/penguins.json";
+
+const penguins = rawPenguins
+  .filter((d) => d.body_mass_g && d.flipper_length_mm)
+  .map(({ species, body_mass_g, flipper_length_mm }) => ({
+    species,
+    body_mass_g,
+    flipper_length_mm
+  }));
+
+const massOptions = {
+  title: "Distribution de la masse corporelle",
+  subtitle: "Poids des manchots groupé par tranches et espèces",
+  caption: "Figure 2. Histogramme empilé par tranches de 200 g.",
+  ariaLabel: "Histogramme de la distribution de masse corporelle en grammes",
+  grid: true,
+  x: { label: "Masse corporelle (g)" },
+  y: { label: "Effectif" },
+  color: { legend: true },
+  marks: [
+    // @ts-ignore - Observable Plot accepts fill in binX at runtime
+    Plot.rectY(penguins, Plot.binX({ y: "count" }, { x: "body_mass_g", fill: "species" })),
+    Plot.ruleY([0])
+  ]
+};
+
+const boxplotOptions = {
+  title: "Longueur des nageoires selon l'espèce",
+  subtitle: "Médianes, quartiles et valeurs atypiques (en mm)",
+  caption: "Figure 3. Boîtes à moustaches comparatives.",
+  ariaLabel: "Boîtes à moustaches de la longueur des nageoires",
+  height: 280,
+  marginLeft: 90,
+  grid: true,
+  x: { label: "Longueur de la nageoire (mm)" },
+  y: { label: "Espèce" },
+  marks: [
+    Plot.boxX(penguins, { x: "flipper_length_mm", y: "species", fill: "species" })
+  ]
+};
+
+const relationOptions = {
+  title: "Relation entre masse et longueur de nageoire",
+  subtitle: "Chaque point représente un manchot observé",
+  caption: "Figure 4. Corrélation entre la masse corporelle et la longueur de la nageoire.",
+  ariaLabel: "Nuage de points de la masse corporelle selon la longueur de la nageoire",
+  height: 320,
+  grid: true,
+  x: { label: "Masse corporelle (g)" },
+  y: { label: "Longueur de la nageoire (mm)" },
+  color: { legend: true },
+  marks: [
+    Plot.dot(penguins, {
+      x: "body_mass_g",
+      y: "flipper_length_mm",
+      fill: "species",
+      stroke: "species",
+      fillOpacity: 0.75,
+      r: 4
+    })
+  ]
+};
+---
+
+<BaseLayout title="Morphologie">
+  <h1>Étude morphologique</h1>
+  <p class="page-intro">Comparaison de la masse corporelle et de la longueur des nageoires chez les manchots.</p>
+
+  <div class="chart-card">
+    <PlotFigure options={massOptions} />
+  </div>
+
+  <div class="chart-card">
+    <PlotFigure options={boxplotOptions} />
+  </div>
+
+  <div class="chart-card">
+    <PlotFigure options={relationOptions} />
+  </div>
+</BaseLayout>

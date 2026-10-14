@@ -1,0 +1,81 @@
+---
+import * as Plot from "@observablehq/plot";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import rawPenguins from "../data/penguins.json";
+import { speciesColorDomain, speciesColorRange } from "../data/speciesColors";
+
+const penguins = rawPenguins
+  .filter((d) => d.sex && d.island)
+  .map(({ species, sex, island }) => ({
+    species,
+    sex,
+    island
+  }));
+
+const barSexOptions = {
+  title: "Effectif par sexe et espèce",
+  subtitle: "Répartition des individus enregistrés",
+  caption: "Figure 4. Nombre de spécimens mâles et femelles observés.",
+  ariaLabel: "Diagramme en barres horizontales du ratio de sexe par espèce",
+  height: 280,
+  marginLeft: 90,
+  x: { grid: true, label: "Effectif" },
+  y: { label: "Espèce" },
+  color: { legend: true },
+  marks: [
+    Plot.barX(penguins, Plot.groupY({ x: "count" }, { y: "species", fill: "sex" })),
+    Plot.ruleX([0])
+  ]
+};
+
+const islandOptions = {
+  title: "Répartition géographique par île",
+  subtitle: "Localisation des colonies étudiées",
+  caption: "Figure 5. Répartition par île de l'archipel.",
+  ariaLabel: "Diagramme en barres montrant la répartition des colonies par île",
+  height: 280,
+  marginLeft: 90,
+  x: { grid: true, label: "Effectif" },
+  y: { label: "Île" },
+  color: { legend: true },
+  marks: [
+    Plot.barX(penguins, Plot.groupY({ x: "count" }, { y: "island", fill: "species" })),
+    Plot.ruleX([0])
+  ]
+};
+
+const speciesShareOptions = {
+  title: "Répartition des espèces observées",
+  subtitle: "Chaque carré représente un individu du jeu de données",
+  caption: "Figure 6. Répartition des observations par espèce.",
+  ariaLabel: "Diagramme en carrés de la répartition des espèces",
+  height: 300,
+  color: { domain: speciesColorDomain, range: speciesColorRange, legend: true },
+  x: { label: "Espèce" },
+  y: { label: "Nombre d'individus", grid: true },
+  marks: [
+    Plot.waffleY(
+      rawPenguins,
+      Plot.groupX({ y: "count" }, { x: "species", fill: "species" })
+    )
+  ]
+};
+---
+
+<BaseLayout title="Démographie">
+  <h1>Démographie et habitat</h1>
+  <p class="page-intro">Distribution de la population de manchots en fonction de leur île d'origine et du sexe.</p>
+
+  <div class="chart-card">
+    <PlotFigure options={barSexOptions} />
+  </div>
+
+  <div class="chart-card">
+    <PlotFigure options={islandOptions} />
+  </div>
+
+  <div class="chart-card">
+    <PlotFigure options={speciesShareOptions} />
+  </div>
+</BaseLayout>

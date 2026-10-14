@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+import PlotFigure from '../components/PlotFigure.astro';
+import * as Plot from '@observablehq/plot';
+import penguins from '../data/penguins.json';
+import { speciesColorDomain, speciesColorRange, speciesColors } from '../data/speciesColors';
+
+const species = [
+  { name: 'Adelie', label: 'Adélie', id: 'adelie', color: speciesColors.Adelie },
+  { name: 'Chinstrap', label: 'Chinstrap', id: 'chinstrap', color: speciesColors.Chinstrap },
+  { name: 'Gentoo', label: 'Gentoo', id: 'gentoo', color: speciesColors.Gentoo }
+];
+
+const colorOptions = { domain: speciesColorDomain, range: speciesColorRange };
+---
+
+<Layout title="Espèces de manchots avec onglets">
+  <div class="species-page">
+    <a href="/species/" class="text-blue-700 underline">Retour à la version slider</a>
+    <header class="species-header">
+      <p class="eyebrow">Palmer DataViz</p>
+      <h1>Comparer les espèces avec des onglets</h1>
+      <p class="page-intro">Chaque onglet affiche le graphique d'une espèce.</p>
+    </header>
+
+    <div class="tabs">
+      <div class="tabs-list" role="tablist" aria-label="Choisir une espèce">
+        {species.map((item, index) => (
+          <button
+            type="button"
+            id={`tab-${item.id}`}
+            role="tab"
+            aria-controls={`panel-${item.id}`}
+            aria-selected={index === 0}
+            class="tab-button"
+            style={`border-color: ${item.color}; --species-color: ${item.color}`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {species.map((item, index) => {
+        const data = penguins.filter((penguin) => penguin.species === item.name);
+
+        return (
+          <section
+            id={`panel-${item.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${item.id}`}
+            class="tab-panel"
+            hidden={index !== 0}
+          >
+            <div class="species-slide__heading">
+              <h2>{item.label}</h2>
+              <span>{data.length} observations</span>
+            </div>
+            <PlotFigure options={{
+              color: colorOptions,
+              marks: [
+                Plot.dot(data, {
+                  x: 'culmen_length_mm',
+                  y: 'culmen_depth_mm',
+                  stroke: 'species',
+                  fill: 'species',
+                  fillOpacity: 0.75
+                })
+              ]
+            }} />
+            <a class="species-slide__link" href={`/species/${item.name}/`} style={`--species-color: ${item.color}`}>
+              Voir la page {item.label}
+            </a>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .species-page {
+    min-width: 0;
+    padding: 1rem 0 2rem;
+  }
+
+  .species-header {
+    margin: 1.25rem 0;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.35rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .species-header h1 {
+    margin: 0;
+  }
+
+  .species-header .page-intro {
+    margin: 0.5rem 0 0;
+  }
+
+  .species-slide__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .species-slide__heading h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .species-slide__heading span {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+
+  .species-slide__link {
+    color: var(--species-color);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  @media (max-width: 34rem) {
+    .species-slide__heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+</style>
+
+<script>
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+  const tabPanels = document.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const panelId = button.getAttribute('aria-controls');
+      tabButtons.forEach((tab) => tab.setAttribute('aria-selected', String(tab === button)));
+      tabPanels.forEach((panel) => {
+        panel.hidden = panel.id !== panelId;
+      });
+    });
+  });
+</script>

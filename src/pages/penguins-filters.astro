@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../data/penguins.json";
+
+const data = penguins.filter((penguin) => penguin.culmen_length_mm && penguin.culmen_depth_mm);
+---
+
+<BaseLayout title="Penguins avec plusieurs filtres">
+  <h1>Penguins avec plusieurs filtres</h1>
+  <p class="page-intro">Combinez une espece, une ile et un sexe pour filtrer les observations.</p>
+
+  <div class="controls controls--grouped">
+    <label for="species">Espece</label>
+    <select name="species" id="species">
+      <option value="">Toutes les especes</option>
+      <option value="Adelie">Adelie</option>
+      <option value="Chinstrap">Chinstrap</option>
+      <option value="Gentoo">Gentoo</option>
+    </select>
+    <label for="island">Ile</label>
+    <select name="island" id="island">
+      <option value="">Toutes les iles</option>
+      <option value="Biscoe">Biscoe</option>
+      <option value="Dream">Dream</option>
+      <option value="Torgersen">Torgersen</option>
+    </select>
+    <label for="sex">Sexe</label>
+    <select name="sex" id="sex">
+      <option value="">Tous les sexes</option>
+      <option value="MALE">MALE</option>
+      <option value="FEMALE">FEMALE</option>
+    </select>
+  </div>
+
+  <div class="chart-card">
+    <div id="plot" aria-label="Nuage de points avec plusieurs filtres">
+      <PlotFigure options={{
+        grid: true,
+        x: { label: "Longueur du bec (mm)" },
+        y: { label: "Profondeur du bec (mm)" },
+        color: { legend: true },
+        marks: [
+          Plot.dot(data, {
+            x: "culmen_length_mm",
+            y: "culmen_depth_mm",
+            stroke: "species",
+          }),
+        ],
+      }} />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import penguins from "../data/penguins.json";
+  import { renderPenguinPlot } from "../scripts/penguinPlot";
+
+  const selectSpecies = document.querySelector<HTMLSelectElement>("#species");
+  const selectIsland = document.querySelector<HTMLSelectElement>("#island");
+  const selectSex = document.querySelector<HTMLSelectElement>("#sex");
+  const plotContainer = document.querySelector<HTMLDivElement>("#plot");
+
+  function renderPlot() {
+    if (!selectSpecies || !selectIsland || !selectSex || !plotContainer) return;
+
+    const filteredPenguins = penguins
+      .filter((penguin) => !selectSpecies.value || penguin.species === selectSpecies.value)
+      .filter((penguin) => !selectIsland.value || penguin.island === selectIsland.value)
+      .filter((penguin) => !selectSex.value || penguin.sex === selectSex.value);
+
+    renderPenguinPlot(plotContainer, filteredPenguins);
+  }
+
+  [selectSpecies, selectIsland, selectSex].forEach((select) => {
+    select?.addEventListener("change", renderPlot);
+  });
+  renderPlot();
+</script>

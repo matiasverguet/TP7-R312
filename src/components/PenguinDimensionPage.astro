@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlotFigure from './PlotFigure.astro';
+import * as Plot from '@observablehq/plot';
+import penguins from '../data/penguins.json';
+import { speciesColorDomain, speciesColorRange } from '../data/speciesColors';
+
+interface Props {
+  dimension: 'species' | 'island' | 'sex';
+  value: string;
+  label: string;
+}
+
+const { dimension, value, label } = Astro.props;
+const filteredPenguins = penguins.filter((penguin) => penguin[dimension] === value);
+const dimensionLabels = {
+  species: 'espèce',
+  island: 'île',
+  sex: 'sexe',
+};
+---
+
+<BaseLayout title={`Manchots par ${dimensionLabels[dimension]} : ${label}`}>
+  <a href={`/penguins/${dimension === 'species' ? 'specie' : dimension}/`} class="back-link">
+    &larr; Retour à la liste des {dimensionLabels[dimension]}s
+  </a>
+  <h1>Manchots — {label}</h1>
+  <p class="page-intro">
+    {filteredPenguins.length} observation{filteredPenguins.length > 1 ? 's' : ''} pour cette
+    {dimension === 'species' ? ' espèce' : ` ${dimensionLabels[dimension]}`}.
+  </p>
+
+  <div class="chart-card">
+    <PlotFigure options={{
+      grid: true,
+      color: { domain: speciesColorDomain, range: speciesColorRange },
+      x: { label: 'Longueur du bec (mm)' },
+      y: { label: 'Profondeur du bec (mm)' },
+      marks: [
+        Plot.dot(filteredPenguins, {
+          x: 'culmen_length_mm',
+          y: 'culmen_depth_mm',
+          fill: 'species',
+          fillOpacity: 0.75,
+          r: 4,
+        }),
+      ],
+    }} />
+  </div>
+</BaseLayout>

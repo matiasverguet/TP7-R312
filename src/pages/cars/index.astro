@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import cars from '../../data/cars.json';
+
+const years = [...new Set(cars.map((car) => car.year))].sort((a, b) => a - b);
+---
+
+<BaseLayout title="Voitures par année">
+  <h1>Voitures par année</h1>
+  <p class="page-intro">
+    Sélectionnez une année pour explorer la relation entre le poids et la puissance des voitures.
+  </p>
+
+  <ul class="dimension-list">
+    {years.map((year) => (
+      <li><a href={`/cars/year/${year}/`}>Année : {year}</a></li>
+    ))}
+  </ul>
+</BaseLayout>

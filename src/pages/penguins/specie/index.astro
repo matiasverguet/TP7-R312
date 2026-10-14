@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import penguins from '../../../data/penguins.json';
+
+const species = [...new Set(penguins.map((penguin) => penguin.species))].sort();
+---
+
+<BaseLayout title="Manchots par espèce">
+  <h1>Manchots par espèce</h1>
+  <p class="page-intro">Choisissez une espèce pour afficher son graphique.</p>
+  <ul class="dimension-list">
+    {species.map((value) => (
+      <li><a href={`/penguins/specie/${value}/`}>{value === 'Adelie' ? 'Adélie' : value}</a></li>
+    ))}
+  </ul>
+</BaseLayout>

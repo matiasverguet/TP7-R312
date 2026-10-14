@@ -1,0 +1,17 @@
+---
+import PenguinDimensionPage from '../../../components/PenguinDimensionPage.astro';
+import penguins from '../../../data/penguins.json';
+
+export function getStaticPaths() {
+  const sexes = [...new Set(penguins.map((penguin) => penguin.sex).filter(Boolean))];
+
+  return sexes.map((value) => ({
+    params: { sex: value },
+    props: { value, label: value },
+  }));
+}
+
+const { value, label } = Astro.props;
+---
+
+<PenguinDimensionPage dimension="sex" value={value} label={label} />

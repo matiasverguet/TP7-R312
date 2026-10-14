@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PlotFigure from '../../../components/PlotFigure.astro';
+import * as Plot from '@observablehq/plot';
+import cars from '../../../data/cars.json';
+
+export function getStaticPaths() {
+  const years = [...new Set(cars.map((car) => car.year))];
+
+  return years.map((year) => ({
+    params: { year: String(year) },
+    props: { year },
+  }));
+}
+
+const { year } = Astro.props;
+const filteredCars = cars.filter((car) => car.year === year);
+const carsWithEconomy = filteredCars.filter((car) => car['economy (mpg)'] !== null);
+const carsWithPower = filteredCars.filter(
+  (car) => car['displacement (cc)'] !== null && car['power (hp)'] !== null,
+);
+const carsWithAcceleration = filteredCars.filter(
+  (car) => car['0-60 mph (s)'] !== null && car['weight (lb)'] !== null,
+);
+---
+
+<BaseLayout title={`Voitures de ${year}`}>
+  <a href="/cars/" class="back-link">&larr; Retour aux années</a>
+  <h1>Voitures de l'année {year}</h1>
+  <p class="page-intro">
+    {filteredCars.length} voiture{filteredCars.length > 1 ? 's' : ''} trouvée{filteredCars.length > 1 ? 's' : ''} pour cette année.
+  </p>
+
+  <div class="chart-card">
+    <PlotFigure options={{
+      grid: true,
+      x: { label: 'Poids (lb)' },
+      y: { label: 'Puissance (hp)' },
+      title: `Relation puissance / poids — voitures ${year}`,
+      marks: [
+        Plot.dot(filteredCars, {
+          x: 'weight (lb)',
+          y: 'power (hp)',
+          fill: 'steelblue',
+          r: 4,
+          fillOpacity: 0.7,
+          title: (car) => car.name,
+        }),
+      ],
+    }} />
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <PlotFigure options={{
+        grid: true,
+        x: { label: 'Consommation (mpg)' },
+        y: { label: 'Nombre de voitures' },
+        title: `Distribution de la consommation — ${year}`,
+        marks: [
+          Plot.rectY(carsWithEconomy, Plot.binX({ y: 'count' }, { x: 'economy (mpg)', thresholds: 8 })),
+          Plot.ruleY([0]),
+        ],
+      }} />
+    </div>
+
+    <div class="chart-card">
+      <PlotFigure options={{
+        grid: true,
+        x: { label: 'Cylindrée (cc)' },
+        y: { label: 'Puissance (hp)' },
+        title: `Cylindrée et puissance — ${year}`,
+        marks: [
+          Plot.dot(carsWithPower, {
+            x: 'displacement (cc)',
+            y: 'power (hp)',
+            fill: 'darkorange',
+            r: 4,
+            fillOpacity: 0.7,
+            title: (car) => car.name,
+          }),
+        ],
+      }} />
+    </div>
+
+    <div class="chart-card">
+      <PlotFigure options={{
+        grid: true,
+        x: { label: 'Poids (lb)' },
+        y: { label: '0–60 mph (s)' },
+        title: `Poids et accélération — ${year}`,
+        marks: [
+          Plot.dot(carsWithAcceleration, {
+            x: 'weight (lb)',
+            y: '0-60 mph (s)',
+            fill: 'seagreen',
+            r: 4,
+            fillOpacity: 0.7,
+            title: (car) => car.name,
+          }),
+        ],
+      }} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .charts-grid .chart-card {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 48rem) {
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

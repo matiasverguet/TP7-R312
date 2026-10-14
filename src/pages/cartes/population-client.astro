@@ -12,37 +12,49 @@ import { listeAge, listePeriode, listeSexe } from "../../scripts/populationMap";
   <div class="controls">
     <label for="periode">Année</label>
     <select id="periode">
-      {listePeriode.map((p, i) => <option selected={i === 0}>{p}</option>)}
+      {listePeriode.map((p, i) => <option value={p} selected={i === 0}>{p}</option>)}
     </select>
     <label for="sexe">Sexe</label>
     <select id="sexe">
-      {listeSexe.map((s) => <option selected={s === "Total"}>{s}</option>)}
+      {listeSexe.map((s) => <option value={s} selected={s === "Total"}>{s}</option>)}
     </select>
     <label for="age">Âge</label>
     <select id="age">
-      {listeAge.map((a) => <option selected={a === "Total"}>{a}</option>)}
+      {listeAge.map((a) => <option value={a} selected={a === "Total"}>{a}</option>)}
     </select>
   </div>
 
   <div class="chart-card">
+    <p id="no-data" class="no-data" hidden></p>
     <div id="plot" class="plot-container" aria-live="polite"></div>
   </div>
 </BaseLayout>
 
 <script>
   import * as Plot from "@observablehq/plot";
-  import { populationMapOptions } from "../../scripts/populationMap";
+  import { hasPopulationData, populationMapOptions } from "../../scripts/populationMap";
 
   const elmYear = document.getElementById("periode") as HTMLSelectElement;
   const elmSex = document.getElementById("sexe") as HTMLSelectElement;
   const elmAge = document.getElementById("age") as HTMLSelectElement;
   const plotContainer = document.getElementById("plot") as HTMLDivElement;
+  const noData = document.getElementById("no-data") as HTMLParagraphElement;
 
   function renderPlot() {
     // Lit les entrées
     const selectedYear = Number(elmYear.value);
     const selectedSex = elmSex.value;
     const selectedAge = elmAge.value;
+
+    // Combinaison absente des données (ex. 2010 + "Femme") : message au lieu d'une carte vide
+    if (!hasPopulationData(selectedYear, selectedSex, selectedAge)) {
+      noData.textContent = `Pas de données pour ${selectedYear}, sexe « ${selectedSex} », âge « ${selectedAge} ».`;
+      noData.hidden = false;
+      plotContainer.replaceChildren();
+      return;
+    }
+    noData.hidden = true;
+
     // Calcule et remplace le graphique précédent
     const plot = Plot.plot(populationMapOptions(selectedYear, selectedSex, selectedAge));
     plotContainer.replaceChildren(plot);
@@ -66,6 +78,11 @@ import { listeAge, listePeriode, listeSexe } from "../../scripts/populationMap";
     border-radius: 6px;
     background: var(--card-bg);
     font: inherit;
+  }
+  .no-data {
+    margin: 0;
+    padding: 1rem;
+    font-style: italic;
   }
   .plot-container :global(svg) {
     width: 100%;

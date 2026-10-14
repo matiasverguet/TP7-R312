@@ -10,12 +10,44 @@ export interface PopulationRow {
   Valeur: number;
 }
 
-const population = populationMain as PopulationRow[];
+// Nettoie les données : certains libellés INSEE ont des espaces en trop ("De 15 à 24 ans "),
+// or le navigateur supprime ces espaces dans la valeur d'un <option> → aucune correspondance.
+const population: PopulationRow[] = (populationMain as any[]).map((d) => ({
+  Géographie: String(d["Géographie"]).trim(),
+  Sexe: String(d.Sexe).trim(),
+  Âge: String(d["Âge"]).trim(),
+  Période: Number(d["Période"]),
+  Valeur: Number(d.Valeur),
+}));
+
+// Ordre logique des tranches d'âge (les valeurs inconnues sont placées à la fin)
+const ordreAge = [
+  "Total",
+  "Moins de 15 ans",
+  "Moins de 20 ans",
+  "De 15 à 24 ans",
+  "15 ans ou plus",
+  "De 25 à 39 ans",
+  "De 40 à 54 ans",
+  "De 55 à 64 ans",
+  "65 ans ou plus",
+  "De 65 à 79 ans",
+  "80 ans ou plus",
+];
+const rangAge = (a: string) => (ordreAge.includes(a) ? ordreAge.indexOf(a) : ordreAge.length);
 
 // Listes des valeurs possibles pour les SELECT (sans doublons)
 export const listePeriode = [...new Set(population.map((d) => d.Période))].sort((a, b) => b - a);
 export const listeSexe = [...new Set(population.map((d) => d.Sexe))];
-export const listeAge = [...new Set(population.map((d) => d.Âge))];
+export const listeAge = [...new Set(population.map((d) => d.Âge))].sort((a, b) => rangAge(a) - rangAge(b));
+
+// Indique si une combinaison année/sexe/âge existe dans les données
+// (ex. 2010 et 2015 n'ont que Sexe = "Total")
+export function hasPopulationData(selectedYear: number, selectedSex: string, selectedAge: string) {
+  return population.some(
+    (p) => p.Période === selectedYear && p.Sexe === selectedSex && p.Âge === selectedAge,
+  );
+}
 
 // Options Plot de la carte, utilisables côté serveur (PlotFigure) comme côté client
 export function populationMapOptions(
@@ -30,7 +62,7 @@ export function populationMapOptions(
         p.Géographie === deptName &&
         p.Période === selectedYear &&
         p.Sexe === selectedSex &&
-        p["Âge"] === selectedAge,
+        p.Âge === selectedAge,
     );
 
   return {

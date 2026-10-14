@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+// Import des styles CSS de Leaflet pour l'affichage de la carte
+import "leaflet/dist/leaflet.css";
+---
+
+<BaseLayout title="Établissements supérieurs — Leaflet">
+  <h1>Établissements d'enseignement supérieur</h1>
+  <p class="page-intro">
+    Implantations des établissements publics d'enseignement supérieur. Cliquez sur un point pour voir son nom.
+  </p>
+
+  <figure class="chart-card">
+    <div id="map" style="height: 600px;" role="region" aria-label="Carte interactive des établissements d'enseignement supérieur en France"></div>
+    <figcaption>Source : MESR, implantations des établissements d'enseignement supérieur publics.</figcaption>
+  </figure>
+</BaseLayout>
+
+<script>
+  import listeEtablissements from "../../assets/listeEtablissements.json";
+
+  // Import de la bibliothèque Leaflet pour créer la carte interactive
+  import L from "leaflet";
+  // Dans l'élément d'ID "map" : création de la carte centrée sur la France (lat: 46.6033, lon: 1.883) avec un zoom niveau 6
+  // preferCanvas : plus rapide avec ~2500 points
+  const map = L.map("map", { preferCanvas: true }).setView([46.6033, 1.883], 6);
+
+  // Fond de carte OpenStreetMap (https://leafletjs.com/examples/quick-start/)
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  // Un cercle par établissement, avec une popup
+  for (const etab of listeEtablissements) {
+    L.circleMarker([etab.lat, etab.lon], {
+      radius: 5,
+      color: "#1d4ed8",
+      fillColor: "#3b82f6",
+      fillOpacity: 0.7,
+      weight: 1,
+    })
+      .bindPopup(
+        `<strong>${etab.nom ?? "Établissement"}</strong><br>${etab.etablissement ?? ""}<br>${etab.commune ?? ""}`,
+      )
+      .addTo(map);
+  }
+</script>
+
+<style>
+  figure {
+    margin: 0 0 2rem;
+  }
+  figcaption {
+    margin-top: 0.75rem;
+    color: #475569;
+    font-size: 0.9rem;
+  }
+</style>

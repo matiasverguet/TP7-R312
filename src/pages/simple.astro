@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <p class="page-intro">Premier graphique Observable Plot genere directement dans le navigateur.</p>
 
   <div class="chart-card">
-    <div id="plot" class="plot-container" aria-label="Graphique en barres aleatoire"></div>
+    <div id="plot" class="plot-container"></div>
   </div>
 </BaseLayout>
 
@@ -19,6 +19,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   if (plotContainer) {
     const plot = Plot.plot({
+      title: "Graphique en barres simple",
+      caption: "Figure 1. Valeurs de 1 à 5.",
+      ariaLabel: "Graphique en barres de cinq valeurs croissantes",
       y: { grid: true },
       marks: [Plot.barY(data, { x: "value", y: "value" })]
     });

@@ -13,6 +13,10 @@ const data = penguins.filter((penguin) => penguin.culmen_length_mm && penguin.cu
 
   <div class="chart-card">
     <PlotFigure options={{
+      title: "Dimensions du bec des manchots",
+      subtitle: "Longueur et profondeur du bec selon l'espèce",
+      caption: "Source : Palmer Penguins. Chaque point est un manchot.",
+      ariaLabel: "Nuage de points : longueur du bec en fonction de sa profondeur",
       grid: true,
       x: { label: "Longueur du bec (mm)" },
       y: { label: "Profondeur du bec (mm)" },

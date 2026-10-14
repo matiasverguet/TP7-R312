@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const pages = [
+  { href: "/cartes/etablissements/", label: "Établissements supérieurs (Leaflet)" },
+  { href: "/cartes/population-serveur/", label: "Population — Plot côté serveur" },
+  { href: "/cartes/population-client/", label: "Population — Plot côté client avec filtres" },
+];
+---
+
+<BaseLayout title="Cartes">
+  <h1>Cartes</h1>
+  <p class="page-intro">TP7 : cartographie avec Leaflet et Observable Plot (GeoJSON).</p>
+  <ul class="dimension-list">
+    {pages.map((page) => <li><a href={page.href}>{page.label}</a></li>)}
+  </ul>
+</BaseLayout>

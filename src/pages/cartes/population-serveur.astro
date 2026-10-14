@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlotFigure from "../../components/PlotFigure.astro";
+import { listePeriode, populationMapOptions } from "../../scripts/populationMap";
+
+// Valeurs fixées côté serveur (la carte est générée au build)
+const selectedYear = listePeriode[0];
+const selectedSex = "Total";
+const selectedAge = "Total";
+---
+
+<BaseLayout title="Population — côté serveur">
+  <h1>Population par département (côté serveur)</h1>
+  <p class="page-intro">
+    La carte est calculée par Astro avec Observable Plot et un GeoJSON des départements.
+    Le navigateur reçoit directement le SVG.
+  </p>
+
+  <div class="chart-card">
+    <PlotFigure options={populationMapOptions(selectedYear, selectedSex, selectedAge)} />
+  </div>
+</BaseLayout>

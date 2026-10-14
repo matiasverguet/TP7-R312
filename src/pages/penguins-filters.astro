@@ -35,7 +35,7 @@ const data = penguins.filter((penguin) => penguin.culmen_length_mm && penguin.cu
   </div>
 
   <div class="chart-card">
-    <div id="plot" aria-label="Nuage de points avec plusieurs filtres">
+    <div id="plot" aria-live="polite">
       <PlotFigure options={{
         grid: true,
         x: { label: "Longueur du bec (mm)" },

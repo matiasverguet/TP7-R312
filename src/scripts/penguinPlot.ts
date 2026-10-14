@@ -18,6 +18,11 @@ export function renderPenguinPlot(
 
   container.replaceChildren(
     Plot.plot({
+      // Accessibilité : Plot génère <figure>, titre, sous-titre et <figcaption>
+      title: "Dimensions du bec des manchots",
+      subtitle: `${data.length} observations affichées`,
+      caption: "Source : Palmer Penguins. Chaque point est un manchot, coloré selon son espèce.",
+      ariaLabel: "Nuage de points : longueur du bec en fonction de sa profondeur",
       grid: true,
       x: { label: 'Longueur du bec (mm)' },
       y: { label: 'Profondeur du bec (mm)' },

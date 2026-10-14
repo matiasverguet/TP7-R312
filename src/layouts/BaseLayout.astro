@@ -30,6 +30,15 @@ const subjects = {
     label: 'Baleines',
     routes: [{ href: '/baleines', label: 'Tableau de bord' }],
   },
+  maps: {
+    label: 'Cartes',
+    routes: [
+      { href: '/cartes', label: 'Toutes les cartes' },
+      { href: '/cartes/etablissements', label: 'Établissements (Leaflet)' },
+      { href: '/cartes/population-serveur', label: 'Population (serveur)' },
+      { href: '/cartes/population-client', label: 'Population (client)' },
+    ],
+  },
   sharks: {
     label: 'Requins',
     routes: [{ href: '/requins', label: 'Tableau de bord' }],
@@ -45,6 +54,7 @@ const subjectMatchers: Record<SubjectKey, (path: string) => boolean> = {
   cars: (path) => path === '/cars' || path.startsWith('/cars/'),
   whales: (path) => path === '/baleines',
   sharks: (path) => path === '/requins',
+  maps: (path) => path === '/cartes' || path.startsWith('/cartes/'),
 };
 const activeSubject = (Object.keys(subjectMatchers) as SubjectKey[]).find((key) =>
   subjectMatchers[key](pathname),
@@ -71,6 +81,17 @@ const activePage = pages
       }
       * {
         box-sizing: border-box;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
       body {
         margin: 0;

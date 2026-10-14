@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { listeAge, listePeriode, listeSexe } from "../../scripts/populationMap";
+---
+
+<BaseLayout title="Population — côté client">
+  <h1>Population par département (côté client)</h1>
+  <p class="page-intro">
+    La carte est dessinée dans le navigateur et se met à jour quand on change l'année, le sexe ou l'âge.
+  </p>
+
+  <div class="controls">
+    <label for="periode">Année</label>
+    <select id="periode">
+      {listePeriode.map((p, i) => <option selected={i === 0}>{p}</option>)}
+    </select>
+    <label for="sexe">Sexe</label>
+    <select id="sexe">
+      {listeSexe.map((s) => <option selected={s === "Total"}>{s}</option>)}
+    </select>
+    <label for="age">Âge</label>
+    <select id="age">
+      {listeAge.map((a) => <option selected={a === "Total"}>{a}</option>)}
+    </select>
+  </div>
+
+  <div class="chart-card">
+    <div id="plot" class="plot-container" aria-live="polite"></div>
+  </div>
+</BaseLayout>
+
+<script>
+  import * as Plot from "@observablehq/plot";
+  import { populationMapOptions } from "../../scripts/populationMap";
+
+  const elmYear = document.getElementById("periode") as HTMLSelectElement;
+  const elmSex = document.getElementById("sexe") as HTMLSelectElement;
+  const elmAge = document.getElementById("age") as HTMLSelectElement;
+  const plotContainer = document.getElementById("plot") as HTMLDivElement;
+
+  function renderPlot() {
+    // Lit les entrées
+    const selectedYear = Number(elmYear.value);
+    const selectedSex = elmSex.value;
+    const selectedAge = elmAge.value;
+    // Calcule et remplace le graphique précédent
+    const plot = Plot.plot(populationMapOptions(selectedYear, selectedSex, selectedAge));
+    plotContainer.replaceChildren(plot);
+  }
+
+  [elmYear, elmSex, elmAge].forEach((select) => select.addEventListener("change", renderPlot));
+  renderPlot();
+</script>
+
+<style>
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .controls select {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card-bg);
+    font: inherit;
+  }
+  .plot-container :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+</style>
